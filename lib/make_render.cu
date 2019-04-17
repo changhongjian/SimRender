@@ -37,7 +37,7 @@ namespace MESH_RENDER_GPU {
 		pF_c pdm = pdms + imgw*imgh*rid;
 		auto pimg = pimgs + imgw*imgh*rid * 3;
 
-		
+
 
 		for (int i = 0; i < nF; i++) {
 			int b3 = i * 3;
@@ -56,7 +56,7 @@ namespace MESH_RENDER_GPU {
 			pb[2] = pV[bid2 + 2] - pV[bid0 + 2];
 			cross(pc, pa, pb);
 
-			// !!! ÕâÀïÊÇz<0 ²»¿É¼û
+			// !!! ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½z<0 ï¿½ï¿½ï¿½É¼ï¿½
 			if (pc[2] < 0) continue;
 
 			int b_v[3] = { pF[b3 + 0] * 3, pF[b3 + 1] * 3, pF[b3 + 2] * 3 };
@@ -69,8 +69,8 @@ namespace MESH_RENDER_GPU {
 			};
 
 			//int bbox[4] = { ceill(rectxy[0]),ceill(rectxy[1]), floorl(rectxy[2]),floorl(rectxy[3]) };
-			int bbox[4] = { floor(rectxy[0]),floor(rectxy[1]), ceil(rectxy[2]),ceil(rectxy[3]) }; // larger
-																						
+			int bbox[4] = { int(floor(rectxy[0])),int(floor(rectxy[1])), int(ceil(rectxy[2])),int(ceil(rectxy[3])) }; // larger
+
 			if (bbox[0] < 0)bbox[0] = 0;
 			if (bbox[1] < 0)bbox[1] = 0;
 			if (bbox[2] > imgw)bbox[2] = imgw - 1;
@@ -90,7 +90,7 @@ namespace MESH_RENDER_GPU {
 			_c = pV + b_v[2];
 
 
-			// Ö®ËùÒÔ·´¹ýÀ´£¬ÊÇ¿¼ÂÇÍ¼Æ¬µÄË÷Òý ¡¾²»¹ý¸Ð¾õÒ²Ã»¼¸¸öÏñËØ¡¿
+			// Ö®ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾ï¿½Ò²Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¡ï¿½
 			for (int by = bbox[1]; by <= bbox[3]; by++) {
 				for (int bx = bbox[0]; bx <= bbox[2]; bx++) {
 
@@ -123,9 +123,9 @@ namespace MESH_RENDER_GPU {
 					if (k == 3) {
 						F_c deep = pb_c[0] * pV[b_v[0] + 2] + pb_c[1] * pV[b_v[1] + 2] + pb_c[2] * pV[b_v[2] + 2];
 
-						int xy_id = (imgh - 1 - by)*imgw + bx; 
-								   
-						if (deep > pdm[xy_id]) { 
+						int xy_id = (imgh - 1 - by)*imgw + bx;
+
+						if (deep > pdm[xy_id]) {
 							pdm[xy_id] = deep;
 
 							// calculate texture
@@ -217,9 +217,9 @@ namespace MESH_RENDER_GPU {
 		};
 
 		//int bbox[4] = { ceill(rectxy[0]),ceill(rectxy[1]), floorl(rectxy[2]),floorl(rectxy[3]) };
-		int bbox[4] = { floor(rectxy[0]),floor(rectxy[1]), ceil(rectxy[2]),ceil(rectxy[3]) }; // larger
+		int bbox[4] = { int(floor(rectxy[0])),int(floor(rectxy[1])), int(ceil(rectxy[2])),int(ceil(rectxy[3])) }; // larger
 		//int bbox[4] = { floor(rectxy[0])-1,floor(rectxy[1])-1, ceil(rectxy[2])+1,ceil(rectxy[3])+1 }; // larger
-																								
+
 		if (bbox[0] < 0) bbox[0] = 0;
 		if (bbox[1] < 0) bbox[1] = 0;
 		if (bbox[2] >= imgw) bbox[2] = imgw - 1;
@@ -273,7 +273,7 @@ namespace MESH_RENDER_GPU {
 				}
 
 				if (k == 3) {
-					// compute deep first 
+					// compute deep first
 					F_c deep = pb_c[0] * pV[b_v[0] + 2] + pb_c[1] * pV[b_v[1] + 2] + pb_c[2] * pV[b_v[2] + 2];
 
 					// calculate texture
@@ -319,7 +319,7 @@ namespace MESH_RENDER_GPU {
 						else break;
 						if (__cnt > 3) break;
 					}
-	
+
 				}
 
 			} // bx
@@ -336,7 +336,7 @@ namespace MESH_RENDER_GPU {
 		//int nF = dims[1];
 
 		int * gpu_dims = (int*)c_param.mp["gpu_dims"];
-		pF_c pV = (F_c *)c_param.mp["V"]; // ogl 
+		pF_c pV = (F_c *)c_param.mp["V"]; // ogl
 		pF_c pT = (F_c *)c_param.mp["T"]; // RGB
 		int* pF = (int *)c_param.mp["F"]; // anticlockwise
 
@@ -358,7 +358,7 @@ namespace MESH_RENDER_GPU {
 		int nF = dims[1];
 		int * gpu_dims = (int*)c_param.mp["gpu_dims"];
 
-		pF_c pV = (F_c *)c_param.mp["V"]; // ogl 
+		pF_c pV = (F_c *)c_param.mp["V"]; // ogl
 		pF_c pT = (F_c *)c_param.mp["T"]; // RGB
 		int* pF = (int *)c_param.mp["F"]; // anticlockwise
 
@@ -370,7 +370,7 @@ namespace MESH_RENDER_GPU {
 
 		//Check the error messages:
 		check_error(cudaPeekAtLastError());
-		
+
 	}
 
 

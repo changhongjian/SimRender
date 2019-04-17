@@ -1,3 +1,7 @@
 _build
 chj_speed_cdll/lib/
 __pycache__
+res/
+.idea/
+__pycache__
+*/__pycache__

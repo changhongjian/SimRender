@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 2.8)
+set(targetname render)
+project(${targetname})
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -O3 -std=c++11" )
+
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+set(SRC_DIR ${PROJECT_SOURCE_DIR}/)
+
+include_directories(${SRC_DIR})
+
+file(GLOB CURRENT_HEADERS ${SRC_DIR}/*.h )
+file(GLOB CURRENT_SOURCES ${SRC_DIR}/*.cpp ${SRC_DIR}/*.c )
+
+
+find_package(CUDA)
+ADD_DEFINITIONS(-DGPU -DNO_CUDNN)
+include_directories(${SRC_DIR}/)
+IF (WIN32) 
+set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -Xcompiler /wd4819")
+ENDIF()
+file(GLOB CU_CURRENT_HEADERS ${SRC_DIR}/*.h )
+file(GLOB CU_CURRENT_SOURCES ${SRC_DIR}/*.cpp ${SRC_DIR}/*.c )
+file(GLOB CURRENT_CUDA_SOURCES ${SRC_DIR}/*.cu )
+
+source_group("Include" FILES ${CURRENT_HEADERS} ${CU_CURRENT_HEADERS})
+source_group("Source" FILES ${CURRENT_SOURCES} ${CU_CURRENT_SOURCES})
+source_group("CuSource" FILES ${CURRENT_CUDA_SOURCES})
+
+
+CUDA_COMPILE(CU_OBJ ${CURRENT_CUDA_SOURCES})
+cuda_add_library(${targetname} SHARED ${CU_CURRENT_SOURCES} ${CU_CURRENT_HEADERS} ${CU_OBJ} ${CURRENT_SOURCES} ${CURRENT_HEADERS})
+
+target_link_libraries(${targetname} ${CUDA_curand_LIBRARY} ${CUDA_cublas_LIBRARY})
+
+SET_TARGET_PROPERTIES(${targetname} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${LIBRARY_OUTPUT_PATH}) 
+SET_TARGET_PROPERTIES(${targetname} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${LIBRARY_OUTPUT_PATH})
