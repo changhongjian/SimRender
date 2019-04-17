@@ -35,5 +35,3 @@ Here is the results:
 Meshlab has added its own lighting and use perspective projection as default. For this rendering, I assume your 3D obj has done perspective projection (z use its original) or orthogonal projection.
 
 
-
-**If it really helps you, please star it.**
