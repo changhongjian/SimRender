@@ -11,16 +11,15 @@ This is my simple framework to accelerate python with C / CUDA. A useful example
 
 
 **TIPS about rendering**
-1. If you study deep learning about 3D reconstruction, you may know why I write this example and what the following tips to say.
-2. Supporting batch rendering.
-3. But, I'm not provide the example about neural network back propagation.
+1. Supporting batch rendering.
+2. I don't provide the example about neural network back propagation.
 Actually, if you want to autodiff by pytorch, the rendering code can't be write as this. You can use my framework to compute rendering informations quickly, and then render images only by pytorch operations.
-4. The rendering code is not perfect and really simple. You may need to correct or modify it according to your tasks.
+
 
 # Requirements
 CUDA
 
-torch (python)
+pytorch
 
 # Demo
 To run my code, you must got to dir `chj_speed_cdll` to compile a dynamic link library first. It is only related with cuda, not related with python, numpy or pytorch. So if your are familiar with C++, it will be very easy.
@@ -34,4 +33,11 @@ Here is the results:
 
 Meshlab has added its own lighting and use perspective projection as default. For this rendering, I assume your 3D obj has done perspective projection (z use its original) or orthogonal projection.
 
+**Speed**
+Rendering 224*224 images takes less than 10ms, even the batch size is 128. (On TitanX)
+
+
+# Future Work
+
+1. The rendering code is not perfect and really simple. You may need to correct or modify it according to your tasks.
 
