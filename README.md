@@ -60,6 +60,16 @@ Meshlab has added its own lighting and use perspective projection as default. Fo
 # Speed
 Rendering a single image only takes 0.4ms on Titan X GPU. With a small batch of 128 samples, it takes about 10ms.  
 
+(On GTX1060 3G) Rendering two 224*224 images takes about 1ms. 
+
+Rough measurements.
+
+| batch size | times (ms) |
+|--------|--------|
+| 2 | 1 |
+|  16      |   4.2     |
+|  64      |   16     |
+|  128      |   35     |
 
 # Future Work
 
