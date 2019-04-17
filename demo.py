@@ -3,6 +3,7 @@
 
 import time
 import cv2
+import os
 import torch
 from render.lib import Render
 from render.geometry import get_obj_v_t_f
@@ -24,7 +25,10 @@ _numpy_to_cuda_tensor = lambda x: torch.from_numpy(x).cuda()
 
 def demo():
     torch.cuda.synchronize()
-    V, T, F = get_obj_v_t_f('resource/face1.obj')
+    obj_fp = 'resource/face1.obj'
+    V, T, F = get_obj_v_t_f(obj_fp)
+
+    print('Loading from {}'.format(obj_fp))
     # T.fill(0.8)
     nV, nT, nF = V.shape[0], T.shape[0], F.shape[0]
     bsize, h, w = 1, 224, 224
@@ -35,14 +39,19 @@ def demo():
     render = Render(lib_path=lib_path)
     render.init(bsize, nV, nF, h, w, F)
 
-    for i in range(10):
+    for i in range(5):
         end = time.time()
         imgs = render.render(V, T, magic=True)
         imgs = imgs.cpu().numpy()
         elapse = time.time() - end
         print('Elapse: {:.1f}ms'.format(elapse * 1000))
 
-    cv2.imwrite('res/face1.png', imgs[0])
+    if not os.path.exists('res'):
+        os.mkdir('res')
+    wfp = 'res/face1.png'
+    cv2.imwrite(wfp, imgs[0])
+
+    print('Rendered to {}'.format(wfp))
 
 
 def main():

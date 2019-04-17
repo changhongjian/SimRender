@@ -16,28 +16,52 @@ This is my simple framework to accelerate python with C / CUDA. A useful example
 Actually, if you want to autodiff by pytorch, the rendering code can't be write as this. You can use my framework to compute rendering informations quickly, and then render images only by pytorch operations.
 
 
-# Requirements
+# Getting Started
+## Requirements
 CUDA
 
-pytorch
+PyTorch
 
-# Demo
-To run my code, you must got to dir `chj_speed_cdll` to compile a dynamic link library first. It is only related with cuda, not related with python, numpy or pytorch. So if your are familiar with C++, it will be very easy.
+## Running demo
+```
+# 1. Clone
+git clone https://github.com/cleardusk/SimRender.git
+cd SimRender
 
-## 1.mesh_render.py
-Just see the function `f1()`, you will know how to use it.
+# 2. build the library driven by ctypes
+cd lib
+mkdir build
+cd build
+cmake ..
+make
 
-Here is the results:
+# 3. run demo
+python3 demo.py
+```
+
+The terminal output is
+```
+Loading from resource/face1.obj
+Elapse: 5.8ms
+Elapse: 0.4ms
+Elapse: 0.4ms
+Elapse: 0.4ms
+Elapse: 0.4ms
+Rendered to res/face1.png
+```
+
+
+The rendered results of MeshLab and ours are:
 
 ![res](resource/res.jpg)
 
 Meshlab has added its own lighting and use perspective projection as default. For this rendering, I assume your 3D obj has done perspective projection (z use its original) or orthogonal projection.
 
-**Speed**
-Rendering 224*224 images takes less than 10ms, even the batch size is 128. (On TitanX)
+# Speed
+Rendering a single image only takes 0.4ms on Titan X GPU. With a small batch of 128 samples, it takes about 10ms.  
 
 
 # Future Work
 
-1. The rendering code is not perfect and really simple. You may need to correct or modify it according to your tasks.
+1. Lighting.
 
