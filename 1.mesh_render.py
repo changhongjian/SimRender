@@ -70,6 +70,23 @@ def f1():
         if key==27: break
         
 
+'''
+# test time
+for i in range(10):
+    t0 = time.clock()
+    gpu_imgs = cls_batch_render.render(Vs, Ts)
+    imgs=gpu_imgs.cpu().numpy()
+    t1 = time.clock()
+    print("Total running time1: %.3f ms" % (1000*(t1 - t0)))
+    
+    t0 = time.time()
+    gpu_imgs = cls_batch_render.render(Vs, Ts)
+    imgs=gpu_imgs.cpu().numpy()
+    t1 = time.time()
+    print("Total running time2: %.3f ms" % (1000*(t1 - t0)))
+
+'''
+
 class _cls_batch_render:
     def __init__(self, fcdll):
         speed = CHJ_speed()
@@ -116,12 +133,14 @@ class _cls_batch_render:
         speed.set_mp_torch("T", Ts)
         
         
-        speed.cdll.D3F_batch_render_info_gpu()
-        #speed.cdll.D3F_batch_nF_render_info_gpu()
+        # slow, may slower than CPU 
+        #speed.cdll.D3F_batch_render_info_gpu()
+        # very fast but some pixels may not be rendered
+        speed.cdll.D3F_batch_nF_render_info_gpu() 
         
         return self.imgs.clone()
 
-    # ^_^ Finally, I realized what I say in the Tips.
+    # ^_^ Finally, I realized what I said above.
     def pre_set(self):
         speed = self.speed
         speed.set_mp("dims", self.dims)

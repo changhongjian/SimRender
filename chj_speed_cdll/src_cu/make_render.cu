@@ -35,7 +35,7 @@ namespace MESH_RENDER_GPU {
 		pF_c pT = pTs + 3 * nV*rid;
 
 		pF_c pdm = pdms + imgw*imgh*rid;
-		auto pimg = pimgs + imgw*imgh*rid * 3;
+		c_uchar *  pimg = pimgs + imgw*imgh*rid * 3;
 
 		
 
@@ -184,7 +184,7 @@ namespace MESH_RENDER_GPU {
 		pF_c pT = pTs + 3 * nV*rid;
 
 		pF_c pdm = pdms + imgw*imgh*rid;
-		auto pimg = pimgs + imgw*imgh*rid*3;
+		c_uchar *  pimg = pimgs + imgw*imgh*rid*3;
 
 		int i = Fid;
 
@@ -345,7 +345,7 @@ namespace MESH_RENDER_GPU {
 		c_uchar * img = (c_uchar *)c_param.mp["img_BGR_uint8"];  // ocv
 
 
-		D3F_batch_render_info_kernel << <1, bsize >> >(bsize, gpu_dims, pV, pT, pF, pdm, img);
+		D3F_batch_render_info_kernel << <bsize, 1 >> >(bsize, gpu_dims, pV, pT, pF, pdm, img);
 
 		check_error(cudaPeekAtLastError());
 

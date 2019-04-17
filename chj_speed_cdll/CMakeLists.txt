@@ -8,8 +8,8 @@ project(${targetname})
 #
 add_compile_options(-fPIC)
 #
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -03")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -03 -std=c++11" )
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -O3 -std=c++11" )
 
 
 # openmp support
