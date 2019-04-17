@@ -26,8 +26,8 @@ class CHJ_speed:
         
     def set_mp(self, nm, npmat):
         if self.check_type==1:
-            if npmat.dtype==np.float32: p(nm,"type is float32")
-            if npmat.dtype==np.int64: p(nm,"type is int64")
+            if npmat.dtype==np.float32: print(nm,"type is float32")
+            if npmat.dtype==np.int64: print(nm,"type is int64")
 
         pm = npmat.ctypes.data_as(c_void_p)
         # bt=(c_char * 100)().value

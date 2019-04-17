@@ -6,6 +6,7 @@ from chj.speed.cdll import CHJ_speed
 from chj.comm.geometry import *
 
 import torch
+import platform
 
 '''
 3D obj must in opengl coordinate system, its texture should be RGB(0~1) and its face vertices need be counterclockwise arrangement.
@@ -21,6 +22,8 @@ def run():
 def f1():
     # anywhere. In linux, it is so.
     fcdll="chj_speed_cdll/lib/chj_speed_deep3dface.dll"
+    if platform.system() == "Linux":
+        fcdll="libchj_speed_cdll/lib/chj_speed_deep3dface.so"
 
     fdir="resource/"
 
