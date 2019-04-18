@@ -68,4 +68,4 @@ Rough measurements. (Include rendering and gpu->cpu time)
 
 # Postscript
 
-This code is opened for a person for his fast rendering purpose. He helped me optimize the readme and named this repo.
+This code was originally opened for a person for his fast rendering purpose. Meanwhile, he helped me optimize the readme file and name this repo.
