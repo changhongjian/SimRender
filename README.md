@@ -1,6 +1,6 @@
 # Introduction
 
-This is my simple framework to accelerate python with C / CUDA. A useful example about 3D object rendering is provided to show how to use it.
+This is my simple framework to accelerate python with C / CUDA. An useful example about 3D object rendering is provided to show how to use it.
 
 **TIPS about framework**
 1. It just a framework about invoking a dynamic link library by python .
