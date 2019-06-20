@@ -2,8 +2,9 @@
 import os ; import sys 
 os.chdir( os.path.split( os.path.realpath( sys.argv[0] ) )[0] ) 
 
+
 from lib.comm.geometry import *
-from lib.render.render_simple import _cls_batch_render, auto_S
+from lib.render.render_auto_diff import cls_render_for_auto_diff
 
 import torch
 import platform
@@ -12,7 +13,7 @@ import platform
 3D obj must in opengl coordinate system, its texture should be RGB(0~1) and its face vertices need be counterclockwise arrangement.
 You can use meshlab to check.
 
-batch rendering example
+render images which can be used for autodiff
 
 '''
 
@@ -23,7 +24,7 @@ def f1():
     # anywhere. In linux, it is so.
     fcdll="chj_speed_cdll/lib/chj_speed_deep3dface.dll"
     if platform.system() == "Linux":
-        fcdll="libchj_speed_cdll/lib/chj_speed_deep3dface.so"
+        fcdll="chj_speed_cdll/lib/chj_speed_deep3dface.so"
 
     fdir="resource/"
 
@@ -45,52 +46,24 @@ def f1():
     Vs = np.stack((objs[0][0], objs[1][0]), 0)
     Ts = np.stack((objs[0][1], objs[1][1]), 0)
     
-    #@19-6-20
-    # if your `Vs` is not in the image area, use auto_S first (see the code)
-    
     Vs = torch.from_numpy(Vs).cuda()
     Ts = torch.from_numpy(Ts).cuda()
     
-    cls_batch_render = _cls_batch_render(fcdll)
-    cls_batch_render.init(bsize, nV, nF, imgh, imgw, F )
+    _cls_render = cls_render_for_auto_diff(fcdll)
+    _cls_render.init_render(F, nV, nF, imgh, imgw, batch_size=bsize)
     
+    # this is used for traning networks
+    # if Vs or Ts are require_grad, then the imgs are require_grad
+    # imgs = _cls_render.run(Vs, Ts)
     
-    if 1==1:
-        gpu_imgs = cls_batch_render.render(Vs, Ts)
-    else:
-        cls_batch_render.pre_set()
-        gpu_imgs = cls_batch_render.renderv2(Vs, Ts)
-        
-        Vs_new = Vs.clone()
-        Vs[0] = Vs_new[1]
-        Vs[1] = Vs_new[0]
-        
-        gpu_imgs = cls_batch_render.renderv2(Vs, Ts)
-    
-    imgs=gpu_imgs.cpu().numpy()
+    # just for examples
+    imgs = _cls_render.run_get_ocv_imgs(Vs, Ts)
     
     for img in imgs:
         key=showimg(img)
         if key==27: break
         
-
-'''
-# test time
-for i in range(10):
-    t0 = time.clock()
-    gpu_imgs = cls_batch_render.render(Vs, Ts)
-    imgs=gpu_imgs.cpu().numpy()
-    t1 = time.clock()
-    print("Total running time1: %.3f ms" % (1000*(t1 - t0)))
-    
-    t0 = time.time()
-    gpu_imgs = cls_batch_render.render(Vs, Ts)
-    imgs=gpu_imgs.cpu().numpy()
-    t1 = time.time()
-    print("Total running time2: %.3f ms" % (1000*(t1 - t0)))
-
-'''
-
-
+        
 if __name__=="__main__":
     run()
+    

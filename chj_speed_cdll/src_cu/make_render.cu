@@ -90,7 +90,6 @@ namespace MESH_RENDER_GPU {
 			_c = pV + b_v[2];
 
 
-			// 之所以反过来，是考虑图片的索引 【不过感觉也没几个像素】
 			for (int by = bbox[1]; by <= bbox[3]; by++) {
 				for (int bx = bbox[0]; bx <= bbox[2]; bx++) {
 
@@ -292,10 +291,11 @@ namespace MESH_RENDER_GPU {
 					tex[1] = pb_c[0] * pmat[1] + pb_c[1] * pmat[4] + pb_c[2] * pmat[7];
 					tex[2] = pb_c[0] * pmat[2] + pb_c[1] * pmat[5] + pb_c[2] * pmat[8];
 
+                    // !!! BE CAREFULL, I've Timed 255
 					for (int _i = 0; _i < 3; _i++) {
 						if (tex[_i] < 0) tex[_i] = 0;
 						if (tex[_i] > 1) tex[_i] = 1;
-						tex[_i] *= 255;
+						tex[_i] *= 255; /// !!!
 					}
 
 					// remember image are in opencv 3D obj are in opengl, so y should change

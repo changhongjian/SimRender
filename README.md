@@ -12,8 +12,8 @@ This is my simple framework to accelerate python with C / CUDA. A useful example
 
 **TIPS about rendering**
 1. Supporting batch rendering.
-2. I don't provide the example about neural network back propagation.
-Actually, if you want to autodiff by pytorch, the rendering code can't be write as this. You can use my framework to compute rendering informations quickly, and then render images only by pytorch operations.
+2. ~~I don't provide the example about neural network back propagation.
+Actually, if you want to autodiff by pytorch, the rendering code can't be write as this. You can use my framework to compute rendering informations quickly, and then render images only by pytorch operations.~~ I've added it @19-6-20
 
 
 # Requirements
