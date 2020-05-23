@@ -71,4 +71,29 @@ def get_obj_v_t_f(fnm):
     f = np.array( f ).astype(np.int32) - 1 #!!! 1-base to 0-base
     
     return v, t, f     
-    
+
+def save_obj(fname, vtx, face=None, tex=None, decimals=5, v_fmt=None):
+    if v_fmt is not None: print("don't use v_fmt")
+    vtx = vtx.reshape(-1, 3)
+    if tex is not None:
+        tex[tex < 0] = 0
+        tex[tex > 1] = 1
+        tex = tex.reshape(-1, 3)
+
+    #num = vtx.shape[0]
+    if tex is not None:
+        vtx = np.hstack( (vtx, tex) )
+    vtx=np.around(vtx, decimals=decimals).astype(np.str).tolist()
+    with open(fname, "w") as fp:
+        for vec in vtx:
+            s = " ".join(vec)
+            s = f"v {s}\n"
+            fp.write(s)
+
+        if face is None: return
+        face=face+1
+        face = face.astype(np.str).tolist()
+        for f in face:
+            s = " ".join(f)
+            s = f"f {s}\n"
+            fp.write(s)
